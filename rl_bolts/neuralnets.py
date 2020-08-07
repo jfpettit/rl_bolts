@@ -139,7 +139,7 @@ class CategoricalPolicy(Actor):
 # Cell
 class GaussianPolicy(Actor):
     r"""
-    A class for a Gaussian Policy network. Used in continuous action space environments. The policy is an :func:`~MLP`.
+    A class for a Gaussian Policy network. Used in continuous action space environments. The policy is an `MLP`.
 
     Args:
     - state_features (int): Dimensionality of the state space.
@@ -331,7 +331,7 @@ class MLPQFunction(nn.Module):
     r"""
     A Q function network for Q policy gradient methods.
 
-    The Q function is an :func:`~MLP`. It always takes in a (state, action) pair and returns a Q-value estimate for that pair.
+    The Q function is an `MLP`. It always takes in a (state, action) pair and returns a Q-value estimate for that pair.
 
     Args:
     - state_features (int): Dimensionality of the state space.

@@ -268,7 +268,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 <div class="output_markdown rendered_html output_subarea ">
 <h2 id="GaussianPolicy" class="doc_header"><code>class</code> <code>GaussianPolicy</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L140" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GaussianPolicy</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>List</code>[<code>T</code>], <code>Tuple</code>], <strong><code>activation</code></strong>:<code>Callable</code>, <strong><code>out_activation</code></strong>:<code>Callable</code>) :: <a href="/rl_bolts/neuralnets#Actor"><code>Actor</code></a></p>
 </blockquote>
-<p>A class for a Gaussian Policy network. Used in continuous action space environments. The policy is an :func:<code>~MLP</code>.</p>
+<p>A class for a Gaussian Policy network. Used in continuous action space environments. The policy is an <a href="/rl_bolts/neuralnets#MLP"><code>MLP</code></a>.</p>
 <p>Args:</p>
 <ul>
 <li>state_features (int): Dimensionality of the state space.</li>
@@ -564,7 +564,7 @@ Args:</p>
 <h2 id="MLPQFunction" class="doc_header"><code>class</code> <code>MLPQFunction</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L330" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLPQFunction</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>tuple</code>, <code>list</code>], <strong><code>activation</code></strong>:<code>Callable</code>) :: <code>Module</code></p>
 </blockquote>
 <p>A Q function network for Q policy gradient methods.</p>
-<p>The Q function is an :func:<code>~MLP</code>. It always takes in a (state, action) pair and returns a Q-value estimate for that pair.</p>
+<p>The Q function is an <a href="/rl_bolts/neuralnets#MLP"><code>MLP</code></a>. It always takes in a (state, action) pair and returns a Q-value estimate for that pair.</p>
 <p>Args:</p>
 <ul>
 <li>state_features (int): Dimensionality of the state space.</li>
