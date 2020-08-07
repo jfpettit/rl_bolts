@@ -1,12 +1,12 @@
 ---
 
-title: Project name here
+title: rl_bolts 
 
 keywords: fastai
 sidebar: home_sidebar
 
-summary: "Summary description here."
-description: "Summary description here."
+summary: "rl_bolts is intended to be a package of nuts and bolts of RL algorithms, along with some full implementations of RL algorithms. "
+description: "rl_bolts is intended to be a package of nuts and bolts of RL algorithms, along with some full implementations of RL algorithms. "
 ---
 <!--
 
@@ -29,7 +29,7 @@ description: "Summary description here."
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>This file will become your README and also the index of your documentation.</p>
+<p>rl_bolts is starting as a package of just nuts and bolts of RL, and algorithms (and new nuts and bolts) will be added over time, based on necessity.</p>
 
 </div>
 </div>
@@ -42,7 +42,9 @@ description: "Summary description here."
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><code>pip install your_project_name</code></p>
+<p><code>git clone https://github.com/jfpettit/rl_bolts.git</code></p>
+<p><code>cd rl_bolts</code></p>
+<p><code>pip install -e .</code></p>
 
 </div>
 </div>
@@ -55,7 +57,8 @@ description: "Summary description here."
 </div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Fill me in please! Don't forget code examples:</p>
+<p>Import the bits you need to use in your code.</p>
+<p>The bit below sets up an actor-critic network for the CartPole-v1 gym environment.</p>
 
 </div>
 </div>
@@ -67,7 +70,54 @@ description: "Summary description here."
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">rl_bolts.neuralnets</span> <span class="k">as</span> <span class="nn">nns</span>
+<span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s2">&quot;CartPole-v1&quot;</span><span class="p">)</span>
+<span class="n">actor_critic</span> <span class="o">=</span> <span class="n">nns</span><span class="o">.</span><span class="n">ActorCritic</span><span class="p">(</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">action_space</span>
+<span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can print out the architecture of our actor_critic net below:</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">actor_critic</span>
 </pre></div>
 
     </div>
@@ -82,9 +132,86 @@ description: "Summary description here."
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>2</pre>
+<pre>ActorCritic(
+  (policy): CategoricalPolicy(
+    (net): MLP(
+      (layers): ModuleList(
+        (0): Linear(in_features=4, out_features=32, bias=True)
+        (1): Linear(in_features=32, out_features=32, bias=True)
+        (2): Linear(in_features=32, out_features=2, bias=True)
+      )
+    )
+  )
+  (value_f): MLP(
+    (layers): ModuleList(
+      (0): Linear(in_features=4, out_features=32, bias=True)
+      (1): Linear(in_features=32, out_features=32, bias=True)
+      (2): Linear(in_features=32, out_features=1, bias=True)
+    )
+  )
+)</pre>
 </div>
 
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">obs</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="n">action</span><span class="p">,</span> <span class="n">logp</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">actor_critic</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">as_tensor</span><span class="p">(</span><span class="n">obs</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The cell above starts the environment in a new episode, and passes it through the actor-critic to get an action, action log probability, and value estimate for the state.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;action&quot;</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;logp&quot;</span><span class="p">,</span> <span class="n">logp</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>action 1
+logp -0.8437294
+value 0.09548707
+</pre>
+</div>
 </div>
 
 </div>
