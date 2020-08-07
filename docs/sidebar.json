@@ -4,6 +4,7 @@
     "utils ": "/utils",
     "datasets": "/datasets",
     "buffers": "/buffers",
-    "neuralnets": "/neuralnets"
+    "neuralnets": "/neuralnets",
+    "losses": "/losses"
   }
 }

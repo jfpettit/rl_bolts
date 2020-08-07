@@ -468,6 +468,155 @@ the user can pass in a custom policy class for that action space as an argument.
 </div>
     {% endraw %}
 
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="MLPQActor" class="doc_header"><code>class</code> <code>MLPQActor</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L289" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLPQActor</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>list</code>, <code>tuple</code>], <strong><code>activation</code></strong>:<code>Callable</code>, <strong><code>action_limit</code></strong>:<code>Union</code>[<code>float</code>, <code>int</code>]) :: <code>Module</code></p>
+</blockquote>
+<p>An actor for Q policy gradient algorithms.</p>
+<p>The policy is an <a href="/rl_bolts/neuralnets#MLP"><code>MLP</code></a>.
+The output from the policy network is scaled to action space limits on the forward pass.</p>
+<p>Args:</p>
+<ul>
+<li>state_features (int): Dimensionality of the state space.</li>
+<li>action_dim (int): Dimensionality of the action space.</li>
+<li>hidden_sizes (list or tuple): Hidden layer sizes.</li>
+<li>activation (Function): Activation function for the network.</li>
+<li>action_limit (float or int): Limits of the action space.</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="MLPQActor.forward" class="doc_header"><code>MLPQActor.forward</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L317" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MLPQActor.forward</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
+</blockquote>
+<p>Return output from the policy network scaled to the limits of the env action space.
+Args:</p>
+<ul>
+<li>x (torch.Tensor): States from environment.</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>scaled_action (torch.Tensor): Action scaled to action space limits.</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="MLPQFunction" class="doc_header"><code>class</code> <code>MLPQFunction</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L330" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLPQFunction</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>tuple</code>, <code>list</code>], <strong><code>activation</code></strong>:<code>Callable</code>) :: <code>Module</code></p>
+</blockquote>
+<p>A Q function network for Q policy gradient methods.</p>
+<p>The Q function is an :func:<code>~MLP</code>. It always takes in a (state, action) pair and returns a Q-value estimate for that pair.</p>
+<p>Args:</p>
+<ul>
+<li>state_features (int): Dimensionality of the state space.</li>
+<li>action_dim (int): Dimensionality of the action space.</li>
+<li>hidden_sizes (list or tuple): Hidden layer sizes.</li>
+<li>activation (Function): Activation function for the network.</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h4 id="MLPQFunction.forward" class="doc_header"><code>MLPQFunction.forward</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L355" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MLPQFunction.forward</code>(<strong><code>x</code></strong>:<code>Tensor</code>, <strong><code>a</code></strong>:<code>Tensor</code>)</p>
+</blockquote>
+<p>Return Q-value estimate for state, action pair (x, a).</p>
+<p>Args:</p>
+<ul>
+<li>x (torch.Tensor): Environment state.</li>
+<li>a (torch.Tensor): Action taken by the policy.</li>
+</ul>
+<p>Returns:</p>
+<ul>
+<li>q (torch.Tensor): Q-value estimate for state action pair.</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
 </div>
  
 

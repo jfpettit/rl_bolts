@@ -19,14 +19,27 @@ index = {"color2num": "00_utils.ipynb",
          "Actor": "03_neuralnets.ipynb",
          "CategoricalPolicy": "03_neuralnets.ipynb",
          "GaussianPolicy": "03_neuralnets.ipynb",
-         "ActorCritic": "03_neuralnets.ipynb"}
+         "ActorCritic": "03_neuralnets.ipynb",
+         "MLPQActor": "03_neuralnets.ipynb",
+         "MLPQFunction": "03_neuralnets.ipynb",
+         "actor_critic_value_loss": "04_losses.ipynb",
+         "reinforce_policy_loss": "04_losses.ipynb",
+         "a2c_policy_loss": "04_losses.ipynb",
+         "ppo_clip_policy_loss": "04_losses.ipynb",
+         "ddpg_policy_loss": "04_losses.ipynb",
+         "ddpg_qfunc_loss": "04_losses.ipynb",
+         "td3_policy_loss": "04_losses.ipynb",
+         "td3_qfunc_loss": "04_losses.ipynb",
+         "sac_policy_loss": "04_losses.ipynb",
+         "sac_qfunc_loss": "04_losses.ipynb"}
 
 modules = ["utils.py",
            "datasets.py",
            "buffers.py",
-           "neuralnets.py"]
+           "neuralnets.py",
+           "losses.py"]
 
-doc_url = "https://jfpettit.github.io/rl_bolts/"
+doc_url = "https://jfpettit.github.io/rl_bolts/rl_bolts/"
 
 git_url = "https://github.com/jfpettit/rl_bolts/tree/master/"
 
