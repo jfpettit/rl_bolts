@@ -7,24 +7,21 @@ entries:
 - folders:
   - folderitems:
     - output: web,pdf
-      title: Export to modules
-      url: /export.html
+      title: Overview
+      url: /
     - output: web,pdf
-      title: Convert to html
-      url: /export2html.html
+      title: 'utils '
+      url: /utils
     - output: web,pdf
-      title: Show doc
-      url: /showdoc.html
+      title: datasets
+      url: /datasets
     - output: web,pdf
-      title: Test functions
-      url: /test.html
+      title: buffers
+      url: /buffers
     - output: web,pdf
-      title: Core functions
-      url: /core.html
-    - output: web,pdf
-      title: Command line functions
-      url: /cli.html
+      title: neuralnets
+      url: /neuralnets
     output: web
-    title: Notebook
+    title: rl_bolts
   output: web
   title: Sidebar
