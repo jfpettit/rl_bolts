@@ -5,6 +5,7 @@
     "datasets": "/datasets",
     "buffers": "/buffers",
     "neuralnets": "/neuralnets",
-    "losses": "/losses"
+    "losses": "/losses",
+    "env_wrappers": "/env_wrappers"
   }
 }

@@ -31,13 +31,18 @@ index = {"color2num": "00_utils.ipynb",
          "td3_policy_loss": "04_losses.ipynb",
          "td3_qfunc_loss": "04_losses.ipynb",
          "sac_policy_loss": "04_losses.ipynb",
-         "sac_qfunc_loss": "04_losses.ipynb"}
+         "sac_qfunc_loss": "04_losses.ipynb",
+         "ToTorchWrapper": "05_env_wrappers.ipynb",
+         "StateNormalizeWrapper": "05_env_wrappers.ipynb",
+         "RewardScalerWrapper": "05_env_wrappers.ipynb",
+         "BestPracticesWrapper": "05_env_wrappers.ipynb"}
 
 modules = ["utils.py",
            "datasets.py",
            "buffers.py",
            "neuralnets.py",
-           "losses.py"]
+           "losses.py",
+           "env_wrappers.py"]
 
 doc_url = "https://jfpettit.github.io/rl_bolts/rl_bolts/"
 
