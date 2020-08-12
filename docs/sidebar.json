@@ -6,6 +6,8 @@
     "buffers": "/buffers",
     "neuralnets": "/neuralnets",
     "losses": "/losses",
-    "env_wrappers": "/env_wrappers"
+    "env_wrappers": "/env_wrappers",
+    "loops": "/loops",
+    "algorithms": "/algorithms"
   }
 }

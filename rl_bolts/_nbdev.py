@@ -11,6 +11,7 @@ index = {"color2num": "00_utils.ipynb",
          "conv2d_output_shape": "00_utils.ipynb",
          "convtransp2d_output_shape": "00_utils.ipynb",
          "Saver": "00_utils.ipynb",
+         "printdict": "00_utils.ipynb",
          "PolicyGradientRLDataset": "01_datasets.ipynb",
          "QPolicyGradientRLDataset": "01_datasets.ipynb",
          "PGBuffer": "02_buffers.ipynb",
@@ -35,14 +36,18 @@ index = {"color2num": "00_utils.ipynb",
          "ToTorchWrapper": "05_env_wrappers.ipynb",
          "StateNormalizeWrapper": "05_env_wrappers.ipynb",
          "RewardScalerWrapper": "05_env_wrappers.ipynb",
-         "BestPracticesWrapper": "05_env_wrappers.ipynb"}
+         "BestPracticesWrapper": "05_env_wrappers.ipynb",
+         "polgrad_interaction_loop": "06_loops.ipynb",
+         "PPO": "07_algorithms.ipynb"}
 
 modules = ["utils.py",
            "datasets.py",
            "buffers.py",
            "neuralnets.py",
            "losses.py",
-           "env_wrappers.py"]
+           "env_wrappers.py",
+           "loops.py",
+           "algorithms.py"]
 
 doc_url = "https://jfpettit.github.io/rl_bolts/rl_bolts/"
 

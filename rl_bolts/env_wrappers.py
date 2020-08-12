@@ -164,7 +164,7 @@ class RewardScalerWrapper(gym.Wrapper):
         self.mean = self.beta * self.mean + (1. - self.beta) * reward
         self.var = self.beta * self.var + (1. - self.beta) * np.square(reward - self.mean)
 
-        scaled_rew = reward / (np.sqrt(self.var) + self.eps)
+        scaled_rew = (reward - self.mean) / (np.sqrt(self.var) + self.eps)
 
         return scaled_rew
 

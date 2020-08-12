@@ -1,0 +1,6 @@
+pytorch-lightning
+gym[box2d]
+pybullet
+-e .
+scipy
+matplotlib

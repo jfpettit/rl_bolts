@@ -12,6 +12,7 @@ from scipy import signal
 import gym
 from scipy.signal import lfilter
 from typing import Optional, Iterable, List, Dict, Callable, Union, Tuple
+from .env_wrappers import ToTorchWrapper
 
 # Cell
 class MLP(nn.Module):
@@ -261,16 +262,16 @@ class ActorCritic(nn.Module):
         - x (torch.Tensor): input state.
 
         Returns:
-        - action (np.array): Action chosen by the policy.
-        - logp_action (np.array): Log probability of that action chosen by the policy.
-        - value (np.array): Value estimate of the current state.
+        - action (torch.Tensor): Action chosen by the policy.
+        - logp_action (torch.Tensor): Log probability of that action chosen by the policy.
+        - value (torch.Tensor): Value estimate of the current state.
         """
         with torch.no_grad():
             policy = self.policy.action_distribution(x)
             action = policy.sample()
             logp_action = self.policy.logprob_from_distribution(policy, action)
             value = self.value_f(x)
-        return action.numpy(), logp_action.numpy(), value.numpy()
+        return action, logp_action, value
 
     def act(self, x: torch.Tensor):
         """
@@ -280,7 +281,7 @@ class ActorCritic(nn.Module):
         - x (torch.Tensor): input state
 
         Returns:
-        - action (np.array): Action chosen by the policy.
+        - action (torch.Tensor): Action chosen by the policy.
         """
         return self.step(x)[0]
 

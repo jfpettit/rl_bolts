@@ -27,6 +27,12 @@ entries:
     - output: web,pdf
       title: env_wrappers
       url: /env_wrappers
+    - output: web,pdf
+      title: loops
+      url: /loops
+    - output: web,pdf
+      title: algorithms
+      url: /algorithms
     output: web
     title: rl_bolts
   output: web

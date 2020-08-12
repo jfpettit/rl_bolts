@@ -52,12 +52,13 @@ description: "This module contains buffers useful for developing RL agents."
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="PGBuffer" class="doc_header"><code>class</code> <code>PGBuffer</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L12" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PGBuffer</code>(<strong><code>obs_dim</code></strong>:<code>Union</code>[<code>tuple</code>, <code>int</code>], <strong><code>act_dim</code></strong>:<code>Union</code>[<code>tuple</code>, <code>int</code>], <strong><code>size</code></strong>:<code>int</code>, <strong><code>gamma</code></strong>:<code>Optional</code>[<code>float</code>]=<em><code>0.99</code></em>, <strong><code>lam</code></strong>:<code>Optional</code>[<code>float</code>]=<em><code>0.95</code></em>)</p>
+<h2 id="PGBuffer" class="doc_header"><code>class</code> <code>PGBuffer</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L13" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>PGBuffer</code>(<strong><code>obs_dim</code></strong>:<code>Union</code>[<code>tuple</code>, <code>int</code>], <strong><code>act_dim</code></strong>:<code>Union</code>[<code>tuple</code>, <code>int</code>], <strong><code>size</code></strong>:<code>int</code>, <strong><code>gamma</code></strong>:<code>Optional</code>[<code>float</code>]=<em><code>0.99</code></em>, <strong><code>lam</code></strong>:<code>Optional</code>[<code>float</code>]=<em><code>0.95</code></em>)</p>
 </blockquote>
 <p>A buffer for storing trajectories experienced by an agent interacting
 with the environment, and using Generalized Advantage Estimation (GAE-Lambda)
 for calculating the advantages of state-action pairs.</p>
-<p>This class was written by Joshua Achaim at OpenAI.</p>
+<p>This class was written by Joshua Achaim at OpenAI. It was adapted to use PyTorch Tensors instead of NumPy arrays for the
+observations and actions.</p>
 <p>Args:</p>
 <ul>
 <li>obs_dim (tuple or int): Dimensionality of input feature space.</li>
@@ -88,13 +89,13 @@ for calculating the advantages of state-action pairs.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="PGBuffer.store" class="doc_header"><code>PGBuffer.store</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L45" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>PGBuffer.store</code>(<strong><code>obs</code></strong>:<code>array</code>, <strong><code>act</code></strong>:<code>array</code>, <strong><code>rew</code></strong>:<code>Union</code>[<code>int</code>, <code>float</code>, <code>array</code>], <strong><code>val</code></strong>:<code>Union</code>[<code>int</code>, <code>float</code>, <code>array</code>], <strong><code>logp</code></strong>:<code>Union</code>[<code>float</code>, <code>array</code>])</p>
+<h4 id="PGBuffer.store" class="doc_header"><code>PGBuffer.store</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L47" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>PGBuffer.store</code>(<strong><code>obs</code></strong>:<code>Tensor</code>, <strong><code>act</code></strong>:<code>Tensor</code>, <strong><code>rew</code></strong>:<code>Union</code>[<code>int</code>, <code>float</code>, <code>array</code>], <strong><code>val</code></strong>:<code>Union</code>[<code>int</code>, <code>float</code>, <code>array</code>], <strong><code>logp</code></strong>:<code>Union</code>[<code>float</code>, <code>array</code>])</p>
 </blockquote>
 <p>Append one timestep of agent-environment interaction to the buffer.</p>
 <p>Args:</p>
 <ul>
-<li>obs (np.array): Current observation to store.</li>
-<li>act (np.array): Current action.</li>
+<li>obs (torch.Tensor): Current observation to store.</li>
+<li>act (torch.Tensor): Current action.</li>
 <li>rew (int or float or np.array): Current reward from environment.</li>
 <li>val (int or float or np.array): Value estimate for the current state.</li>
 <li>logp (float or np.array): log probability of chosen action under current policy distribution.</li>
@@ -121,11 +122,19 @@ for calculating the advantages of state-action pairs.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="PGBuffer.get" class="doc_header"><code>PGBuffer.get</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L102" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>PGBuffer.get</code>()</p>
+<h4 id="PGBuffer.get" class="doc_header"><code>PGBuffer.get</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L104" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>PGBuffer.get</code>()</p>
 </blockquote>
 <p>Call this at the end of an epoch to get all of the data from
 the buffer, with advantages appropriately normalized (shifted to have
 mean zero and std one). Also, resets some pointers in the buffer.</p>
+<p>Returns:</p>
+<ul>
+<li>obs_buf (torch.Tensor): Buffer of observations collected.</li>
+<li>act_buf (torch.Tensor): Buffer of actions taken.</li>
+<li>adv_buf (torch.Tensor): Advantage calculations.</li>
+<li>ret_buf (torch.Tensor): Buffer of earned returns.</li>
+<li>logp_buf (torch.Tensor): Buffer of log probabilities of selected actions.</li>
+</ul>
 
 </div>
 
@@ -148,7 +157,7 @@ mean zero and std one). Also, resets some pointers in the buffer.</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="PGBuffer.finish_path" class="doc_header"><code>PGBuffer.finish_path</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L71" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>PGBuffer.finish_path</code>(<strong><code>last_val</code></strong>:<code>Union</code>[<code>int</code>, <code>float</code>, <code>array</code>, <code>NoneType</code>]=<em><code>0</code></em>)</p>
+<h4 id="PGBuffer.finish_path" class="doc_header"><code>PGBuffer.finish_path</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>PGBuffer.finish_path</code>(<strong><code>last_val</code></strong>:<code>Union</code>[<code>int</code>, <code>float</code>, <code>array</code>, <code>NoneType</code>]=<em><code>0</code></em>)</p>
 </blockquote>
 <p>Call this at the end of a trajectory, or when one gets cut off
 by an epoch ending. This looks back in the buffer to where the
@@ -194,7 +203,7 @@ for timesteps beyond the arbitrary episode horizon (or epoch cutoff).</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ReplayBuffer" class="doc_header"><code>class</code> <code>ReplayBuffer</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L150" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ReplayBuffer</code>(<strong><code>obs_dim</code></strong>:<code>Union</code>[<code>tuple</code>, <code>int</code>], <strong><code>act_dim</code></strong>:<code>Union</code>[<code>tuple</code>, <code>int</code>], <strong><code>size</code></strong>:<code>int</code>) :: <a href="/rl_bolts/buffers#PGBuffer"><code>PGBuffer</code></a></p>
+<h2 id="ReplayBuffer" class="doc_header"><code>class</code> <code>ReplayBuffer</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L164" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ReplayBuffer</code>(<strong><code>obs_dim</code></strong>:<code>Union</code>[<code>tuple</code>, <code>int</code>], <strong><code>act_dim</code></strong>:<code>Union</code>[<code>tuple</code>, <code>int</code>], <strong><code>size</code></strong>:<code>int</code>) :: <a href="/rl_bolts/buffers#PGBuffer"><code>PGBuffer</code></a></p>
 </blockquote>
 <p>A replay buffer for off-policy RL agents.</p>
 <p>This class is borrowed from OpenAI's SpinningUp package: <a href="https://spinningup.openai.com/en/latest/">https://spinningup.openai.com/en/latest/</a></p>
@@ -226,15 +235,15 @@ for timesteps beyond the arbitrary episode horizon (or epoch cutoff).</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ReplayBuffer.store" class="doc_header"><code>ReplayBuffer.store</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L172" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ReplayBuffer.store</code>(<strong><code>obs</code></strong>:<code>array</code>, <strong><code>act</code></strong>:<code>Union</code>[<code>float</code>, <code>int</code>, <code>array</code>], <strong><code>rew</code></strong>:<code>Union</code>[<code>float</code>, <code>int</code>], <strong><code>next_obs</code></strong>:<code>array</code>, <strong><code>done</code></strong>:<code>bool</code>)</p>
+<h4 id="ReplayBuffer.store" class="doc_header"><code>ReplayBuffer.store</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L186" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ReplayBuffer.store</code>(<strong><code>obs</code></strong>:<code>Tensor</code>, <strong><code>act</code></strong>:<code>Union</code>[<code>float</code>, <code>int</code>, <code>Tensor</code>], <strong><code>rew</code></strong>:<code>Union</code>[<code>float</code>, <code>int</code>], <strong><code>next_obs</code></strong>:<code>Tensor</code>, <strong><code>done</code></strong>:<code>bool</code>)</p>
 </blockquote>
 <p>Append one timestep of agent-environment interaction to the buffer.</p>
 <p>Args:</p>
 <ul>
-<li>obs (np.array): Current observations.</li>
-<li>act (float or int or np.array): Current action.</li>
+<li>obs (torch.Tensor): Current observations.</li>
+<li>act (float or int or torch.Tensor): Current action.</li>
 <li>rew (float or int): Current reward</li>
-<li>next_obs (np.array): Observations from next environment step.</li>
+<li>next_obs (torch.Tensor): Observations from next environment step.</li>
 <li>done (bool): Whether the episode has reached a terminal state.</li>
 </ul>
 
@@ -259,7 +268,7 @@ for timesteps beyond the arbitrary episode horizon (or epoch cutoff).</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ReplayBuffer.sample_batch" class="doc_header"><code>ReplayBuffer.sample_batch</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L198" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ReplayBuffer.sample_batch</code>(<strong><code>batch_size</code></strong>:<code>Optional</code>[<code>int</code>]=<em><code>32</code></em>)</p>
+<h4 id="ReplayBuffer.sample_batch" class="doc_header"><code>ReplayBuffer.sample_batch</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L212" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ReplayBuffer.sample_batch</code>(<strong><code>batch_size</code></strong>:<code>Optional</code>[<code>int</code>]=<em><code>32</code></em>)</p>
 </blockquote>
 <p>Sample a batch of agent-environment interaction from the buffer.</p>
 <p>Args:</p>
@@ -292,12 +301,12 @@ for timesteps beyond the arbitrary episode horizon (or epoch cutoff).</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ReplayBuffer.get" class="doc_header"><code>ReplayBuffer.get</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L218" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ReplayBuffer.get</code>()</p>
+<h4 id="ReplayBuffer.get" class="doc_header"><code>ReplayBuffer.get</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/buffers.py#L232" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ReplayBuffer.get</code>()</p>
 </blockquote>
 <p>Get all contents of the batch.</p>
 <p>Returns:</p>
 <ul>
-<li>list of numpy arrays; full contents of the buffer.</li>
+<li>list of PyTorch Tensors; full contents of the buffer.</li>
 </ul>
 
 </div>

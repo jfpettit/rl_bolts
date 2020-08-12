@@ -4,9 +4,10 @@ __all__ = ['PGBuffer', 'ReplayBuffer']
 
 # Cell
 import numpy as np
-import scipy
+from scipy.signal import lfilter
 from typing import Optional, Any, Union
 import torch
+import gym
 
 # Cell
 class PGBuffer:
@@ -15,7 +16,8 @@ class PGBuffer:
     with the environment, and using Generalized Advantage Estimation (GAE-Lambda)
     for calculating the advantages of state-action pairs.
 
-    This class was written by Joshua Achaim at OpenAI.
+    This class was written by Joshua Achaim at OpenAI. It was adapted to use PyTorch Tensors instead of NumPy arrays for the
+    observations and actions.
 
     Args:
     - obs_dim (tuple or int): Dimensionality of input feature space.
@@ -32,8 +34,8 @@ class PGBuffer:
         gamma: Optional[float] = 0.99,
         lam: Optional[float] = 0.95,
     ):
-        self.obs_buf = np.zeros(self._combined_shape(size, obs_dim), dtype=np.float32)
-        self.act_buf = np.zeros(self._combined_shape(size, act_dim), dtype=np.float32)
+        self.obs_buf = torch.zeros(self._combined_shape(size, obs_dim), dtype=torch.float32)
+        self.act_buf = torch.zeros(self._combined_shape(size, act_dim), dtype=torch.float32)
         self.adv_buf = np.zeros(size, dtype=np.float32)
         self.rew_buf = np.zeros(size, dtype=np.float32)
         self.ret_buf = np.zeros(size, dtype=np.float32)
@@ -44,8 +46,8 @@ class PGBuffer:
 
     def store(
         self,
-        obs: np.array,
-        act: np.array,
+        obs: torch.Tensor,
+        act: torch.Tensor,
         rew: Union[int, float, np.array],
         val: Union[int, float, np.array],
         logp: Union[float, np.array],
@@ -54,8 +56,8 @@ class PGBuffer:
         Append one timestep of agent-environment interaction to the buffer.
 
         Args:
-        - obs (np.array): Current observation to store.
-        - act (np.array): Current action.
+        - obs (torch.Tensor): Current observation to store.
+        - act (torch.Tensor): Current action.
         - rew (int or float or np.array): Current reward from environment.
         - val (int or float or np.array): Value estimate for the current state.
         - logp (float or np.array): log probability of chosen action under current policy distribution.
@@ -104,14 +106,26 @@ class PGBuffer:
         Call this at the end of an epoch to get all of the data from
         the buffer, with advantages appropriately normalized (shifted to have
         mean zero and std one). Also, resets some pointers in the buffer.
+
+        Returns:
+        - obs_buf (torch.Tensor): Buffer of observations collected.
+        - act_buf (torch.Tensor): Buffer of actions taken.
+        - adv_buf (torch.Tensor): Advantage calculations.
+        - ret_buf (torch.Tensor): Buffer of earned returns.
+        - logp_buf (torch.Tensor): Buffer of log probabilities of selected actions.
         """
         assert self.ptr == self.max_size  # buffer has to be full before you can get
         self.ptr, self.path_start_idx = 0, 0
-        # the next two lines implement the advantage normalization trick
-        adv_mean, adv_std = mpi_statistics_scalar(self.adv_buf)
-        # adv_mean, adv_std = np.mean(self.adv_buf), np.std(self.adv_buf)
-        self.adv_buf = (self.adv_buf - adv_mean) / adv_std
-        return [self.obs_buf, self.act_buf, self.adv_buf, self.ret_buf, self.logp_buf]
+        # the line implement the advantage normalization trick
+        adv_mean, adv_std = np.mean(self.adv_buf), np.std(self.adv_buf)
+        self.adv_buf = (self.adv_buf - adv_mean) / (adv_std + 1e-8)
+        return [
+            self.obs_buf,
+            self.act_buf,
+            torch.as_tensor(self.adv_buf, dtype=torch.float32),
+            torch.as_tensor(self.ret_buf, dtype=torch.float32),
+            torch.as_tensor(self.logp_buf, dtype=torch.float32)
+        ]
 
     def _combined_shape(
         self, length: Union[int, np.array], shape: Optional[Union[int, tuple]] = None
@@ -143,7 +157,7 @@ class PGBuffer:
             x1 + discount * x2,
             x2]
         """
-        return scipy.signal.lfilter([1], [1, float(-discount)], x[::-1], axis=0)[::-1]
+        return lfilter([1], [1, float(-discount)], x[::-1], axis=0)[::-1]
 
 # Cell
 
@@ -162,29 +176,29 @@ class ReplayBuffer(PGBuffer):
     def __init__(
         self, obs_dim: Union[tuple, int], act_dim: Union[tuple, int], size: int
     ):
-        self.obs1_buf = np.zeros(self._combined_shape(size, obs_dim), dtype=np.float32)
-        self.obs2_buf = np.zeros(self._combined_shape(size, obs_dim), dtype=np.float32)
-        self.act_buf = np.zeros(self._combined_shape(size, act_dim), dtype=np.float32)
+        self.obs1_buf = torch.zeros(self._combined_shape(size, obs_dim), dtype=torch.float32)
+        self.obs2_buf = torch.zeros(self._combined_shape(size, obs_dim), dtype=torch.float32)
+        self.act_buf = torch.zeros(self._combined_shape(size, act_dim), dtype=torch.float32)
         self.rew_buf = np.zeros(size, dtype=np.float32)
         self.done_buf = np.zeros(size, dtype=np.float32)
         self.ptr, self.size, self.max_size = 0, 0, size
 
     def store(
         self,
-        obs: np.array,
-        act: Union[float, int, np.array],
+        obs: torch.Tensor,
+        act: Union[float, int, torch.Tensor],
         rew: Union[float, int],
-        next_obs: np.array,
+        next_obs: torch.Tensor,
         done: bool,
     ):
         """
         Append one timestep of agent-environment interaction to the buffer.
 
         Args:
-        - obs (np.array): Current observations.
-        - act (float or int or np.array): Current action.
+        - obs (torch.Tensor): Current observations.
+        - act (float or int or torch.Tensor): Current action.
         - rew (float or int): Current reward
-        - next_obs (np.array): Observations from next environment step.
+        - next_obs (torch.Tensor): Observations from next environment step.
         - done (bool): Whether the episode has reached a terminal state.
         """
         self.obs1_buf[self.ptr] = obs
@@ -220,6 +234,12 @@ class ReplayBuffer(PGBuffer):
         Get all contents of the batch.
 
         Returns:
-        - list of numpy arrays; full contents of the buffer.
+        - list of PyTorch Tensors; full contents of the buffer.
         """
-        return [self.obs1_buf, self.obs2_buf, self.act_buf, self.rew_buf, self.done_buf]
+        return [
+            torch.as_tensor(self.obs1_buf, dtype=torch.float32),
+            torch.as_tensor(self.obs2_buf, dtype=torch.float32),
+            torch.as_tensor(self.act_buf, dtype=torch.float32),
+            torch.as_tensor(self.rew_buf, dtype=torch.float32),
+            torch.as_tensor(self.done_buf, dtype=torch.float32)
+        ]

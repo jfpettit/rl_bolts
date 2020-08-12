@@ -44,7 +44,7 @@ description: "rl_bolts is intended to be a package of nuts and bolts of RL algor
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><code>git clone https://github.com/jfpettit/rl_bolts.git</code></p>
 <p><code>cd rl_bolts</code></p>
-<p><code>pip install -e .</code></p>
+<p><code>pip install -r requirements.txt</code></p>
 
 </div>
 </div>
@@ -207,11 +207,95 @@ description: "rl_bolts is intended to be a package of nuts and bolts of RL algor
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>action 1
-logp -0.8437294
-value 0.09548707
+<pre>action tensor(0)
+logp tensor(-0.6733)
+value tensor(0.1155)
 </pre>
 </div>
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Using-a-pre-built-algorithm">Using a pre-built algorithm<a class="anchor-link" href="#Using-a-pre-built-algorithm"> </a></h2><p>While the primary aim of this package is to provide some building blocks for RL algorithms, we'll also provide implementations of a few plug-and-play algorithms. At present, we've implemented <a href="/rl_bolts/algorithms#PPO"><code>PPO</code></a> (it still needs to be thoroughly benchmarked, so be aware of that). Here is how to use it.</p>
+
+</div>
+</div>
+</div>
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">rl_bolts.algorithms</span> <span class="kn">import</span> <span class="n">PPO</span> <span class="c1"># import the PPO algorithm</span>
+<span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="k">as</span> <span class="nn">pl</span> <span class="c1"># PPO is a pytorch-lightning module, so need their library for Trainer.</span>
+<span class="n">env_to_train_in</span> <span class="o">=</span> <span class="s2">&quot;CartPole-v1&quot;</span> <span class="c1"># set env to train PPO in. </span>
+<span class="n">agent</span> <span class="o">=</span> <span class="n">PPO</span><span class="p">(</span><span class="n">env_to_train_in</span><span class="p">)</span> <span class="c1"># initialize agent</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">pl</span><span class="o">.</span><span class="n">Trainer</span><span class="p">(</span><span class="n">reload_dataloaders_every_epoch</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">max_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># set up trainer, in practice you&#39;d set max_epochs to more than one</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">agent</span><span class="p">)</span> <span class="c1"># run trainer</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>GPU available: False, used: False
+TPU available: False, using: 0 TPU cores
+
+  | Name         | Type        | Params
+---------------------------------------------
+0 | actor_critic | ActorCritic | 2 K   
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Epoch 1: 100%|██████████| 1/1 [00:00&lt;00:00,  1.57it/s, loss=107.141, v_num=4, PolicyLoss=-1.19e-8, DeltaPolLoss=-.0222, KL=0.0103, Entropy=0.684, TimesEarlyStopped=0, AvgEarlyStopStep=0, ValueLoss=303, DeltaValLoss=-89.1]
+
+MeanEpReturn: 23.109826589595375
+StdEpReturn: 13.101849424849597
+MaxEpReturn: 90.0
+MinEpReturn: 8.0
+MeanEpLength: 23.109826589595375
+StdEpLength: 13.101849424849597
+PolicyLoss: -1.1920929132713809e-08
+DeltaPolLoss: -0.02216106839478016
+KL: 0.010348903946578503
+Entropy: 0.6843035817146301
+TimesEarlyStopped: 0
+AvgEarlyStopStep: 0
+ValueLoss: 303.3868103027344
+DeltaValLoss: -89.10568237304688
+
+
+Epoch 1: 100%|██████████| 1/1 [00:02&lt;00:00,  2.09s/it, loss=107.141, v_num=4, PolicyLoss=-1.19e-8, DeltaPolLoss=-.0222, KL=0.0103, Entropy=0.684, TimesEarlyStopped=0, AvgEarlyStopStep=0, ValueLoss=303, DeltaValLoss=-89.1]
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>1</pre>
+</div>
+
 </div>
 
 </div>
