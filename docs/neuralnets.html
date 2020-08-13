@@ -91,7 +91,54 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="Actor" class="doc_header"><code>class</code> <code>Actor</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L58" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Actor</code>() :: <code>Module</code></p>
+<h2 id="CNN" class="doc_header"><code>class</code> <code>CNN</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L58" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CNN</code>(<strong><code>input_channels</code></strong>:<code>int</code>, <strong><code>input_height</code></strong>:<code>int</code>, <strong><code>output_size</code></strong>:<code>int</code>, <strong><code>kernel_size</code></strong>:<code>Optional</code>[<code>int</code>]=<em><code>3</code></em>, <strong><code>stride</code></strong>:<code>Optional</code>[<code>int</code>]=<em><code>1</code></em>, <strong><code>channels</code></strong>:<code>list</code>=<em><code>[64, 64]</code></em>, <strong><code>linear_layer_sizes</code></strong>:<code>list</code>=<em><code>[512]</code></em>, <strong><code>activation</code></strong>:<code>Callable</code>=<em><code>'relu'</code></em>, <strong><code>output_activation</code></strong>:<code>Callable</code>=<em><code>None</code></em>, <strong><code>dropout_layers</code></strong>:<code>list</code>=<em><code>None</code></em>, <strong><code>dropout_p</code></strong>:<code>float</code>=<em><code>None</code></em>, <strong><code>out_squeeze</code></strong>:<code>bool</code>=<em><code>False</code></em>) :: <code>Module</code></p>
+</blockquote>
+<p>Create a PyTorch CNN module.</p>
+<p>Args:</p>
+<ul>
+<li>input_channels (int): number of channels in the input</li>
+<li>input_height (int): size of one side of input (currently assumes square input)</li>
+<li>output_size (int): size of network output</li>
+<li>kernel_size (int): Convolutional kernel size</li>
+<li>stride (int): convolutional kernel stride</li>
+<li>channels (list or tuple): List of channel sizes for each convolutional layer</li>
+<li>linear_layer_sizes (list or tuple): list of (if any) sizes of linear layers to add after convolutional layers</li>
+<li>activation (callable): activation function</li>
+<li>output_activation (int): if any, activation to apply to the output layer</li>
+<li>dropout_layers (list or tuple): if any, layers to apply dropout to</li>
+<li>dropout_p (float): probability of dropout to use</li>
+<li>out_squeeze (bool): whether to squeeze the output</li>
+</ul>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    {% endraw %}
+
+    {% raw %}
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_markdown rendered_html output_subarea ">
+<h2 id="Actor" class="doc_header"><code>class</code> <code>Actor</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L131" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>Actor</code>() :: <code>Module</code></p>
 </blockquote>
 <p>Barebones class structure for an Actor.</p>
 
@@ -116,7 +163,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="Actor.forward" class="doc_header"><code>Actor.forward</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L68" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Actor.forward</code>(<strong><code>x</code></strong>, <strong><code>a</code></strong>=<em><code>None</code></em>)</p>
+<h4 id="Actor.forward" class="doc_header"><code>Actor.forward</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L141" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>Actor.forward</code>(<strong><code>x</code></strong>, <strong><code>a</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 <p>Forward pass for an policy.</p>
 <p>Args:</p>
@@ -158,7 +205,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="CategoricalPolicy" class="doc_header"><code>class</code> <code>CategoricalPolicy</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L87" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CategoricalPolicy</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>List</code>[<code>T</code>], <code>Tuple</code>], <strong><code>activation</code></strong>:<code>Callable</code>, <strong><code>out_activation</code></strong>:<code>Callable</code>) :: <a href="/rl_bolts/neuralnets#Actor"><code>Actor</code></a></p>
+<h2 id="CategoricalPolicy" class="doc_header"><code>class</code> <code>CategoricalPolicy</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L160" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>CategoricalPolicy</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>List</code>[<code>T</code>], <code>Tuple</code>], <strong><code>activation</code></strong>:<code>Callable</code>, <strong><code>out_activation</code></strong>:<code>Callable</code>) :: <a href="/rl_bolts/neuralnets#Actor"><code>Actor</code></a></p>
 </blockquote>
 <p>A class for a Categorical Policy network. Used in discrete action space environments.</p>
 <p>The policy is an <a href="/rl_bolts/neuralnets#MLP"><code>MLP</code></a>.</p>
@@ -192,7 +239,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="CategoricalPolicy.logprob_from_distribution" class="doc_header"><code>CategoricalPolicy.logprob_from_distribution</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L127" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>CategoricalPolicy.logprob_from_distribution</code>(<strong><code>policy</code></strong>:<code>Distribution</code>, <strong><code>actions</code></strong>:<code>Tensor</code>)</p>
+<h4 id="CategoricalPolicy.logprob_from_distribution" class="doc_header"><code>CategoricalPolicy.logprob_from_distribution</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L200" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>CategoricalPolicy.logprob_from_distribution</code>(<strong><code>policy</code></strong>:<code>Distribution</code>, <strong><code>actions</code></strong>:<code>Tensor</code>)</p>
 </blockquote>
 <p>Calculate the log-probability of an action under a policy.</p>
 <p>Args:</p>
@@ -226,7 +273,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="CategoricalPolicy.action_distribution" class="doc_header"><code>CategoricalPolicy.action_distribution</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L114" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>CategoricalPolicy.action_distribution</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
+<h4 id="CategoricalPolicy.action_distribution" class="doc_header"><code>CategoricalPolicy.action_distribution</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L187" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>CategoricalPolicy.action_distribution</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
 </blockquote>
 <p>Defines action distribution conditioned on input state.</p>
 <p>Args:</p>
@@ -266,7 +313,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="GaussianPolicy" class="doc_header"><code>class</code> <code>GaussianPolicy</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L141" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GaussianPolicy</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>List</code>[<code>T</code>], <code>Tuple</code>], <strong><code>activation</code></strong>:<code>Callable</code>, <strong><code>out_activation</code></strong>:<code>Callable</code>) :: <a href="/rl_bolts/neuralnets#Actor"><code>Actor</code></a></p>
+<h2 id="GaussianPolicy" class="doc_header"><code>class</code> <code>GaussianPolicy</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L214" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>GaussianPolicy</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>List</code>[<code>T</code>], <code>Tuple</code>], <strong><code>activation</code></strong>:<code>Callable</code>, <strong><code>out_activation</code></strong>:<code>Callable</code>) :: <a href="/rl_bolts/neuralnets#Actor"><code>Actor</code></a></p>
 </blockquote>
 <p>A class for a Gaussian Policy network. Used in continuous action space environments. The policy is an <a href="/rl_bolts/neuralnets#MLP"><code>MLP</code></a>.</p>
 <p>Args:</p>
@@ -299,7 +346,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="GaussianPolicy.action_distribution" class="doc_header"><code>GaussianPolicy.action_distribution</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L171" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>GaussianPolicy.action_distribution</code>(<strong><code>states</code></strong>)</p>
+<h4 id="GaussianPolicy.action_distribution" class="doc_header"><code>GaussianPolicy.action_distribution</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L244" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>GaussianPolicy.action_distribution</code>(<strong><code>states</code></strong>)</p>
 </blockquote>
 <p>Defines action distribution conditioned on input state.</p>
 <p>Args:</p>
@@ -332,7 +379,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="GaussianPolicy.logprob_from_distribution" class="doc_header"><code>GaussianPolicy.logprob_from_distribution</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L185" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>GaussianPolicy.logprob_from_distribution</code>(<strong><code>policy</code></strong>, <strong><code>actions</code></strong>)</p>
+<h4 id="GaussianPolicy.logprob_from_distribution" class="doc_header"><code>GaussianPolicy.logprob_from_distribution</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L258" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>GaussianPolicy.logprob_from_distribution</code>(<strong><code>policy</code></strong>, <strong><code>actions</code></strong>)</p>
 </blockquote>
 <p>Calculate the log-probability of an action under a policy.</p>
 <p>Args:</p>
@@ -373,7 +420,7 @@ description: "Implementations of RL policies, value functions, and actor-critic 
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="ActorCritic" class="doc_header"><code>class</code> <code>ActorCritic</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L199" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ActorCritic</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_space</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>Tuple</code>, <code>List</code>[<code>T</code>], <code>NoneType</code>]=<em><code>(32, 32)</code></em>, <strong><code>activation</code></strong>:<code>Optional</code>[<code>Callable</code>]=<em><code>'tanh'</code></em>, <strong><code>out_activation</code></strong>:<code>Optional</code>[<code>Callable</code>]=<em><code>None</code></em>, <strong><code>policy</code></strong>:<code>Optional</code>[<code>Module</code>]=<em><code>None</code></em>) :: <code>Module</code></p>
+<h2 id="ActorCritic" class="doc_header"><code>class</code> <code>ActorCritic</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L272" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>ActorCritic</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_space</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>Tuple</code>, <code>List</code>[<code>T</code>], <code>NoneType</code>]=<em><code>(32, 32)</code></em>, <strong><code>activation</code></strong>:<code>Optional</code>[<code>Callable</code>]=<em><code>'tanh'</code></em>, <strong><code>out_activation</code></strong>:<code>Optional</code>[<code>Callable</code>]=<em><code>None</code></em>, <strong><code>policy</code></strong>:<code>Optional</code>[<code>Module</code>]=<em><code>None</code></em>) :: <code>Module</code></p>
 </blockquote>
 <p>An Actor Critic class for Policy Gradient algorithms.</p>
 <p>Has built-in capability to work with continuous (gym.spaces.Box) and discrete (gym.spaces.Discrete) action spaces.
@@ -411,7 +458,7 @@ the user can pass in a custom policy class for that action space as an argument.
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ActorCritic.step" class="doc_header"><code>ActorCritic.step</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L257" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ActorCritic.step</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
+<h4 id="ActorCritic.step" class="doc_header"><code>ActorCritic.step</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L330" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ActorCritic.step</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
 </blockquote>
 <p>Get action, action log probability, and value estimate for an input state.</p>
 <p>Args:</p>
@@ -446,7 +493,7 @@ the user can pass in a custom policy class for that action space as an argument.
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="ActorCritic.act" class="doc_header"><code>ActorCritic.act</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L276" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ActorCritic.act</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
+<h4 id="ActorCritic.act" class="doc_header"><code>ActorCritic.act</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L349" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>ActorCritic.act</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
 </blockquote>
 <p>Similar to <code>step</code>, but get only the action.</p>
 <p>Args:</p>
@@ -486,7 +533,7 @@ the user can pass in a custom policy class for that action space as an argument.
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MLPQActor" class="doc_header"><code>class</code> <code>MLPQActor</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L290" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLPQActor</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>list</code>, <code>tuple</code>], <strong><code>activation</code></strong>:<code>Callable</code>, <strong><code>action_limit</code></strong>:<code>Union</code>[<code>float</code>, <code>int</code>]) :: <code>Module</code></p>
+<h2 id="MLPQActor" class="doc_header"><code>class</code> <code>MLPQActor</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L363" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLPQActor</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>list</code>, <code>tuple</code>], <strong><code>activation</code></strong>:<code>Callable</code>, <strong><code>action_limit</code></strong>:<code>Union</code>[<code>float</code>, <code>int</code>]) :: <code>Module</code></p>
 </blockquote>
 <p>An actor for Q policy gradient algorithms.</p>
 <p>The policy is an <a href="/rl_bolts/neuralnets#MLP"><code>MLP</code></a>.
@@ -521,7 +568,7 @@ The output from the policy network is scaled to action space limits on the forwa
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="MLPQActor.forward" class="doc_header"><code>MLPQActor.forward</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L318" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MLPQActor.forward</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
+<h4 id="MLPQActor.forward" class="doc_header"><code>MLPQActor.forward</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L391" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MLPQActor.forward</code>(<strong><code>x</code></strong>:<code>Tensor</code>)</p>
 </blockquote>
 <p>Return output from the policy network scaled to the limits of the env action space.
 Args:</p>
@@ -561,7 +608,7 @@ Args:</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MLPQFunction" class="doc_header"><code>class</code> <code>MLPQFunction</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L331" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLPQFunction</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>tuple</code>, <code>list</code>], <strong><code>activation</code></strong>:<code>Callable</code>) :: <code>Module</code></p>
+<h2 id="MLPQFunction" class="doc_header"><code>class</code> <code>MLPQFunction</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L404" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MLPQFunction</code>(<strong><code>state_features</code></strong>:<code>int</code>, <strong><code>action_dim</code></strong>:<code>int</code>, <strong><code>hidden_sizes</code></strong>:<code>Union</code>[<code>tuple</code>, <code>list</code>], <strong><code>activation</code></strong>:<code>Callable</code>) :: <code>Module</code></p>
 </blockquote>
 <p>A Q function network for Q policy gradient methods.</p>
 <p>The Q function is an <a href="/rl_bolts/neuralnets#MLP"><code>MLP</code></a>. It always takes in a (state, action) pair and returns a Q-value estimate for that pair.</p>
@@ -594,7 +641,7 @@ Args:</p>
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="MLPQFunction.forward" class="doc_header"><code>MLPQFunction.forward</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L356" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MLPQFunction.forward</code>(<strong><code>x</code></strong>:<code>Tensor</code>, <strong><code>a</code></strong>:<code>Tensor</code>)</p>
+<h4 id="MLPQFunction.forward" class="doc_header"><code>MLPQFunction.forward</code><a href="https://github.com/jfpettit/rl_bolts/tree/master/rl_bolts/neuralnets.py#L429" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>MLPQFunction.forward</code>(<strong><code>x</code></strong>:<code>Tensor</code>, <strong><code>a</code></strong>:<code>Tensor</code>)</p>
 </blockquote>
 <p>Return Q-value estimate for state, action pair (x, a).</p>
 <p>Args:</p>

@@ -18,13 +18,13 @@ Import the bits you need to use in your code.
 
 The bit below sets up an actor-critic network for the CartPole-v1 gym environment.
 
-```python
+```
 import rl_bolts.neuralnets as nns
 import gym
 import torch
 ```
 
-```python
+```
 env = gym.make("CartPole-v1")
 actor_critic = nns.ActorCritic(
     env.observation_space.shape[0],
@@ -34,7 +34,7 @@ actor_critic = nns.ActorCritic(
 
 We can print out the architecture of our actor_critic net below:
 
-```python
+```
 actor_critic
 ```
 
@@ -62,14 +62,14 @@ actor_critic
 
 
 
-```python
+```
 obs = env.reset()
 action, logp, value = actor_critic.step(torch.as_tensor(obs, dtype=torch.float32))
 ```
 
 The cell above starts the environment in a new episode, and passes it through the actor-critic to get an action, action log probability, and value estimate for the state.
 
-```python
+```
 print("action", action)
 print("logp", logp)
 print("value", value)
@@ -84,7 +84,7 @@ print("value", value)
 
 While the primary aim of this package is to provide some building blocks for RL algorithms, we'll also provide implementations of a few plug-and-play algorithms. At present, we've implemented `PPO` (it still needs to be thoroughly benchmarked, so be aware of that). Here is how to use it.
 
-```python
+```
 from rl_bolts.algorithms import PPO # import the PPO algorithm
 import pytorch_lightning as pl # PPO is a pytorch-lightning module, so need their library for Trainer.
 env_to_train_in = "CartPole-v1" # set env to train PPO in. 
