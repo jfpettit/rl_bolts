@@ -10,6 +10,9 @@ _tmp*
 tmp*
 tags
 **/lightning_logs
+**/wandb
+**/results
+**/experiments
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
