@@ -12,6 +12,8 @@ tags
 **/lightning_logs
 **/wandb/*
 */wandb/*
+**/rl-bolts-benchmark/*
+**/ppo-ant-seed0
 **/results
 **/experiments
 
