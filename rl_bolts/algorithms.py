@@ -39,6 +39,8 @@ class PPO(pl.LightningModule):
     - val_lr (float): Learning rate for the value optimizer.
     - maxkl (float): Max allowed KL divergence between policy updates.
     - seed (int): Random seed for pytorch and numpy
+    - evaluate (bool): Whether to run eval episodes at the end of each epoch. Saves episodes using gym.wrappers.Monitor.
+    - monitor_dir (str): Directory for monitor to write to. Default is /tmp
     """
     def __init__(
         self,
@@ -52,7 +54,9 @@ class PPO(pl.LightningModule):
         pol_lr: Optional[float] = 3e-4,
         val_lr: Optional[float] = 1e-3,
         maxkl: Optional[float] = 0.01,
-        seed: Optional[int] = 0
+        seed: Optional[int] = 0,
+        evaluate: Optional[bool] = True,
+        monitor_dir: Optional[str] = 'video_results'
     ):
         super().__init__()
 
@@ -93,6 +97,11 @@ class PPO(pl.LightningModule):
         self.pol_lr = pol_lr
         self.val_lr = val_lr
         self.maxkl = maxkl
+        self.evaluate = evaluate
+
+        if self.evaluate:
+            eval_env = gym.wrappers.Monitor(env, monitor_dir, force=True)
+            self.eval_env = ToTorchWrapper(eval_env)
 
         self.tracker_dict = {}
 
@@ -159,6 +168,7 @@ class PPO(pl.LightningModule):
             loss = val_loss
 
         self.tracker_dict.update(log)
+        log.update(self.tracker_dict)
         return {"loss": loss, "log": log, "progress_bar": log}
 
     def inner_loop(self) -> None:
@@ -170,6 +180,7 @@ class PPO(pl.LightningModule):
         utils.printdict(self.tracker_dict)
         self.tracker_dict = {}
         self.inner_loop()
+        self.eval_episodes(n_episodes=1)
 
     def train_dataloader(self):
         dataset = PolicyGradientRLDataset(self.data)
@@ -178,3 +189,38 @@ class PPO(pl.LightningModule):
 
     def backward(self, *args, **kwargs):
         pass
+
+    def eval_episodes(self, n_episodes = 3):
+        if self.evaluate:
+            with torch.no_grad():
+                rets_lst = []
+                lens_lst = []
+                for i in range(n_episodes):
+                    episode_return = 0
+                    episode_length = 0
+                    obs = self.eval_env.reset()
+                    done = False
+                    while not done:
+                        action, logp, value = self.actor_critic.step(obs)
+
+                        obs, r, done, _ = self.eval_env.step(action)
+                        episode_return += r
+                        episode_length += 1
+
+                        if done:
+                            rets_lst.append(episode_return)
+                            lens_lst.append(episode_length)
+
+                            episode_return = 0
+                            episode_length = 0
+                            obs = self.eval_env.reset()
+
+                dct = {
+                    "NumEvalEpisodes": n_episodes,
+                    "MeanEvalEpReturn": np.mean(rets_lst),
+                    "StdEvalEpReturn": np.std(rets_lst),
+                    "MeanEvalEpLength": np.mean(lens_lst),
+                    "StdEvalEpLength": np.std(lens_lst)
+                }
+
+            self.tracker_dict.update(dct)

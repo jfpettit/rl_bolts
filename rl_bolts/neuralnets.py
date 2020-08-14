@@ -13,6 +13,7 @@ import gym
 from scipy.signal import lfilter
 from typing import Optional, Iterable, List, Dict, Callable, Union, Tuple
 from .env_wrappers import ToTorchWrapper
+from rl_bolts import utils
 
 # Cell
 class MLP(nn.Module):
@@ -74,18 +75,19 @@ class CNN(nn.Module):
     - out_squeeze (bool): whether to squeeze the output
     """
     def __init__(self,
-                input_channels: int,
-                input_height: int,
-                output_size: int,
-                kernel_size: Optional[int] = 3,
-                stride: Optional[int] = 1,
-                channels: list = [64, 64],
-                linear_layer_sizes: list = [512],
-                activation: Callable = torch.relu,
-                output_activation: Callable = None,
-                dropout_layers: list = None,
-                dropout_p: float = None,
-                out_squeeze: bool = False):
+            input_channels: int,
+            input_height: int,
+            output_size: int,
+            kernel_size: Optional[int] = 3,
+            stride: Optional[int] = 1,
+            channels: Optional[list] = [64, 64],
+            linear_layer_sizes: Optional[list] = [512],
+            activation: Optional[Callable] = torch.relu,
+            output_activation: Optional[Callable] = None,
+            dropout_layers: Optional[list] = None,
+            dropout_p: Optional[float] = None,
+            out_squeeze: Optional[bool] = False
+        ):
 
         super(CNN, self).__init__()
 
@@ -100,7 +102,7 @@ class CNN(nn.Module):
 
         self.hw=input_height
         for i, l in enumerate(conv_sizes[1:]):
-            self.hw = conv2d_output_size(kernel_size=kernel_size, stride=stride, sidesize=self.hw)
+            self.hw = utils.conv2d_output_size(kernel_size=kernel_size, stride=stride, sidesize=self.hw)
             self.layers.append(nn.Conv2d(conv_sizes[i], l, kernel_size=kernel_size, stride=stride))
 
         self.hw = (self.hw, self.hw)
