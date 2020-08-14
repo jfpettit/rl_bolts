@@ -10,7 +10,8 @@ _tmp*
 tmp*
 tags
 **/lightning_logs
-**/wandb
+**/wandb/*
+*/wandb/*
 **/results
 **/experiments
 
